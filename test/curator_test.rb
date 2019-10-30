@@ -156,4 +156,11 @@ class CuratorTest < Minitest::Test
     assert_instance_of Artist, @curator.artists.first
     assert_equal "Bill Cunningham", @curator.artists.last.name
   end
+
+  def test_photos_taken_between
+    @curator.load_photographs('./data/photographs.csv')
+    @curator.load_artists('./data/artists.csv')
+
+    assert_equal [@curator.photographs.first, @curator.photographs.last], @curator.photographs_taken_between(1950..1965)
+  end
 end

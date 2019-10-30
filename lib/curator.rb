@@ -48,4 +48,11 @@ class Curator < FileIO
       find_photographs_by_artist(artist)
     end.flatten
   end
+
+  def photographs_taken_between(range)
+    @photographs.find_all do |photo|
+      range.first < photo.year.to_i && photo.year.to_i < range.last
+      
+    end
+  end
 end
