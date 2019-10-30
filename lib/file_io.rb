@@ -9,4 +9,10 @@ class FileIO
       add_photograph(Photograph.new(row))
     end
   end
+
+  def load_artists(file_path)
+    CSV.foreach(file_path, headers: true, header_converters: :symbol) do |row|
+      add_artist(Artist.new(row))
+    end
+  end
 end

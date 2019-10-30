@@ -148,4 +148,12 @@ class CuratorTest < Minitest::Test
     assert_instance_of Photograph, @curator.photographs.first
     assert_equal "Child with Toy Hand Grenade in Central Park", @curator.photographs.last.name
   end
+
+  def test_curator_can_load_artists_from_CSV
+    @curator.load_artists('./data/artists.csv')
+
+    assert_equal 6, @curator.artists.length
+    assert_instance_of Artist, @curator.artists.first
+    assert_equal "Bill Cunningham", @curator.artists.last.name
+  end
 end
