@@ -60,12 +60,6 @@ class CuratorTest < Minitest::Test
       died: "1971",
       country: "United States"
       })
-
-    @curator.add_photograph(@photo_1)
-    @curator.add_photograph(@photo_2)
-    @curator.add_artist(@artist_1)
-    @curator.add_artist(@artist_2)
-
   end
 
   def test_it_exists
@@ -78,6 +72,9 @@ class CuratorTest < Minitest::Test
   end
 
   def test_photographs_can_be_added_to_curator
+    @curator.add_photograph(@photo_1)
+    @curator.add_photograph(@photo_2)
+
     assert_equal [@photo_1, @photo_2], @curator.photographs
   end
 
@@ -87,39 +84,68 @@ class CuratorTest < Minitest::Test
   end
 
   def test_artists_can_be_added_to_curator
+    @curator.add_artist(@artist_1)
+    @curator.add_artist(@artist_2)
+
     assert_equal [@artist_1, @artist_2], @curator.artists
   end
 
   def test_curator_can_find_artist_by_id
+    @curator.add_artist(@artist_1)
+    @curator.add_artist(@artist_2)
+
     assert_equal @artist_1, @curator.find_artist_by_id("1")
   end
 
   def test_curator_can_find_photograph_by_id
+    @curator.add_photograph(@photo_1)
+    @curator.add_photograph(@photo_2)
+
     assert_equal @photo_2, @curator.find_photograph_by_id("2")
   end
 
   def test_it_can_find_all_photos_by_artist
+    @curator.add_photograph(@photo_1)
+    @curator.add_photograph(@photo_2)
     @curator.add_photograph(@photo_3)
     @curator.add_photograph(@photo_4)
+    @curator.add_artist(@artist_1)
+    @curator.add_artist(@artist_2)
     @curator.add_artist(@artist_3)
 
     assert_equal [@photo_3, @photo_4], @curator.find_photographs_by_artist(@artist_3)
   end
 
   def test_it_can_find_artists_with_multiple_photographs
+    @curator.add_photograph(@photo_1)
+    @curator.add_photograph(@photo_2)
     @curator.add_photograph(@photo_3)
     @curator.add_photograph(@photo_4)
+    @curator.add_artist(@artist_1)
+    @curator.add_artist(@artist_2)
     @curator.add_artist(@artist_3)
 
     assert_equal [@artist_3], @curator.artists_with_multiple_photographs
   end
 
   def test_curator_can_find_photos_taken_by_artists_from_a_country
+    @curator.add_photograph(@photo_1)
+    @curator.add_photograph(@photo_2)
     @curator.add_photograph(@photo_3)
     @curator.add_photograph(@photo_4)
+    @curator.add_artist(@artist_1)
+    @curator.add_artist(@artist_2)
     @curator.add_artist(@artist_3)
 
     assert_equal [@photo_2, @photo_3, @photo_4], @curator.photographs_taken_by_artist_from("United States")
     assert_equal [], @curator.photographs_taken_by_artist_from("Argentina")
+  end
+
+  def test_curator_can_load_photos_from_CSV
+    @curator.load_photographs('./data/photographs.csv')
+
+    assert_equal 4, @curator.photographs.length
+    assert_instance_of Photograph, @curator.photographs.first
+    assert_equal "Child with Toy Hand Grenade in Central Park", @curator.photographs.last.name
   end
 end

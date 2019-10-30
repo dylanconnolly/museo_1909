@@ -1,4 +1,6 @@
-class Curator
+require './lib/file_io'
+
+class Curator < FileIO
   attr_reader :photographs, :artists
 
   def initialize
